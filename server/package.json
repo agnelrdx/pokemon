@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "Pokemon API",
   "main": "src/index.ts",
-  "private": true,
   "scripts": {
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
