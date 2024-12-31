@@ -1,16 +1,18 @@
 import express from "express";
 
-import MessageResponse from "../interfaces/MessageResponse";
-import emojis from "./emojis";
+import pokemon from "../api/pokemon";
+import favorites from "../api/favorites";
+import { MessageResponse } from "../interfaces/message-response";
 
 const router = express.Router();
 
 router.get<{}, MessageResponse>("/", (req, res) => {
   res.json({
-    message: "API - 👋🌎🌍🌏",
+    message: "Pokemon apis up and running 🌈",
   });
 });
 
-router.use("/emojis", emojis);
+router.use("/pokemon", pokemon);
+router.use("/favorites", favorites);
 
 export default router;

@@ -32,7 +32,6 @@ export const PokemonDialog = ({
             src={pokemon?.sprites.front_default}
             alt={pokemon?.name}
             className="w-1/2 block mx-auto"
-            fetchPriority="low"
             loading="lazy"
             onLoad={() => setImageLoading(false)}
           />

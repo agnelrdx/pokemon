@@ -19,6 +19,7 @@
     "import/extensions": 0,
     "@typescript-eslint/no-redeclare": 0,
     "quotes": "off",
+    "import/no-extraneous-dependencies": "off",
     "@typescript-eslint/quotes": ["error", "double", { "avoidEscape": true }]
   },
   "settings": {

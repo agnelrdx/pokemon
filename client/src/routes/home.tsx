@@ -33,7 +33,7 @@ const Home = () => {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // force slow loading
 
       const res = await fetch(
-        `https://pokeapi.co/api/v2/pokemon?limit=150&offset=${currentOffset}`,
+        `http://localhost:4000/api/v1/pokemon?limit=150&offset=${currentOffset}`,
       );
       const data = await res.json();
 
@@ -60,6 +60,12 @@ const Home = () => {
 
   useEffect(() => {
     fetchPokemons(0);
+
+    fetch("http://localhost:4000/api/v1/favorites", {
+      method: "GET",
+    })
+      .then((res) => res.json())
+      .then((data) => console.log(data));
   }, [fetchPokemons]);
 
   useEffect(() => {
@@ -70,7 +76,7 @@ const Home = () => {
 
   const handleDetails = async (name: string) => {
     setLoading(name);
-    const res = await fetch(`https://pokeapi.co/api/v2/pokemon/${name}`);
+    const res = await fetch(`http://localhost:4000/api/v1/pokemon/${name}`);
     const data = await res.json();
     setPokemon(data);
     setShowDialog(true);
@@ -83,10 +89,7 @@ const Home = () => {
     <div className="container mx-auto">
       <Header />
       <Navbar />
-      <div
-        ref={containerRef}
-        className="border border-slate-200 p-5 grid grid-cols-3 gap-5 mb-10"
-      >
+      <div ref={containerRef} className="grid grid-cols-3 gap-5 mb-10">
         {pokemons.map((pokemon) => (
           <PokemonCard
             key={pokemon.name}
@@ -108,7 +111,7 @@ const Home = () => {
           },
         )}
       />
-      {offset && hasMore && !loadingMore && <div ref={ref} />}
+      {offset && hasMore && !loadingMore ? <div ref={ref} /> : null}
     </div>
   );
 };

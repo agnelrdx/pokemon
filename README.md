@@ -20,4 +20,6 @@ yarn dev
 yarn lint
 yarn test
 yarn build
+yarn db:create
+yarn db:drop
 ```
