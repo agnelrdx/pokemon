@@ -25,6 +25,7 @@ router.post<{}, MessageResponse>("/", async (req, res) => {
       message: "Pokemon added to favorites",
     });
   } catch (error: unknown) {
+    console.error("***error", error);
     res.status(500);
     res.json({
       message: "Internal Server Error",
@@ -40,6 +41,7 @@ router.delete<{}, MessageResponse>("/", async (req, res) => {
       message: "Pokemon deleted to favorites",
     });
   } catch (error: unknown) {
+    console.error("***error", error);
     res.status(500);
     res.json({
       message: "Internal Server Error",
