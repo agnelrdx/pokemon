@@ -45,7 +45,7 @@ const Favorites = () => {
             showRemoveFromFavorites
             selectedPokemon={selectedPokemon}
             showAddToFavorites={false}
-            onKeyChange={handleKeyChange}
+            onAction={handleKeyChange}
             onViewDetails={handlePokemonDetails}
           />
         ))}

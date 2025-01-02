@@ -83,7 +83,7 @@ const Home = () => {
               !favorites.some((fav) => fav.name === pokemon.name)
             }
             showRemoveFromFavorites={false}
-            onKeyChange={handleKeyChange}
+            onAction={handleKeyChange}
             onViewDetails={handlePokemonDetails}
           />
         ))}

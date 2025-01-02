@@ -12,7 +12,7 @@ export const PokemonCard = ({
   selectedPokemon,
   showAddToFavorites,
   showRemoveFromFavorites,
-  onKeyChange,
+  onAction,
   onViewDetails,
 }: PokemonCardProps) => {
   const { toast } = useToast();
@@ -38,9 +38,9 @@ export const PokemonCard = ({
         title: "Added to favorites",
         description: `${id} has been added to your favorites.`,
       });
-      onKeyChange();
+      onAction();
     },
-    [onKeyChange, toast],
+    [onAction, toast],
   );
 
   const handleRemoveFromFavorites = useCallback(
@@ -64,9 +64,9 @@ export const PokemonCard = ({
         title: "Removed from favorites",
         description: `${id} has been removed from your favorites.`,
       });
-      onKeyChange();
+      onAction();
     },
-    [onKeyChange, toast],
+    [onAction, toast],
   );
 
   return (

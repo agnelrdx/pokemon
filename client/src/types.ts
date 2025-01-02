@@ -27,7 +27,7 @@ export type PokemonCardProps = {
   showAddToFavorites: boolean;
   showRemoveFromFavorites: boolean;
   selectedPokemon: string | null;
-  onKeyChange: () => void;
+  onAction: () => void;
   onViewDetails: (name: string) => void;
 };
 
