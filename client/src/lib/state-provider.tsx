@@ -29,7 +29,7 @@ const initialState: StateProvider = {
 // eslint-disable-next-line react-refresh/only-export-components
 export const StateProviderContext = createContext<StateProvider>(initialState);
 
-const API_ROUTE = import.meta.env.VITE_SOME_KEY;
+const API_ROUTE = import.meta.env.VITE_API_URL;
 
 export const StateProvider = ({ children }: StateProviderProps) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);

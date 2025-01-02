@@ -1,5 +1,7 @@
 import { Request, Response, NextFunction } from "express";
-import { Database } from "sqlite";
+import sqlite3 from "sqlite3";
+import { open } from "sqlite";
+import path from "path";
 
 import { ErrorResponse } from "./interfaces/error-response";
 import { DBRequest } from "./interfaces/db";
@@ -24,8 +26,16 @@ export const errorHandler = (
   });
 };
 
-export const attachDb =
-  (db: Database) => (req: DBRequest, res: Response, next: NextFunction) => {
+export const attachDb = async (
+  req: DBRequest,
+  res: Response,
+  next: NextFunction,
+) => {
+  const filename = path.resolve(__dirname, "../db.sqlite3");
+  let db = req.db;
+  if (!db) {
+    db = await open({ filename, driver: sqlite3.Database });
     req.db = db;
-    next();
-  };
+  }
+  next();
+};

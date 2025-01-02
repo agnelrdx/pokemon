@@ -7,7 +7,7 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PokemonCardProps } from "@/types";
 
-const API_ROUTE = import.meta.env.VITE_SOME_KEY;
+const API_ROUTE = import.meta.env.VITE_API_URL;
 
 export const PokemonCard = ({
   pokemon,
