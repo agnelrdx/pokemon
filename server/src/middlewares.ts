@@ -32,6 +32,9 @@ export const attachDb = async (
   next: NextFunction,
 ) => {
   const filename = path.resolve(__dirname, "../db.sqlite3");
+
+  console.log("filename", filename);
+
   let db = req.db;
   if (!db) {
     db = await open({ filename, driver: sqlite3.Database });
