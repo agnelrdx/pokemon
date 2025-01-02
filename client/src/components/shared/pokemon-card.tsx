@@ -7,6 +7,8 @@ import { Card, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { PokemonCardProps } from "@/types";
 
+const API_ROUTE = import.meta.env.VITE_SOME_KEY;
+
 export const PokemonCard = ({
   pokemon,
   selectedPokemon,
@@ -19,7 +21,7 @@ export const PokemonCard = ({
 
   const handleAddToFavorites = useCallback(
     async (id: string) => {
-      const res = await fetch("http://localhost:4000/api/v1/favorites", {
+      const res = await fetch(`${API_ROUTE}/favorites`, {
         method: "POST",
         body: JSON.stringify({ id }),
         headers: {
@@ -45,7 +47,7 @@ export const PokemonCard = ({
 
   const handleRemoveFromFavorites = useCallback(
     async (id: string) => {
-      const res = await fetch("http://localhost:4000/api/v1/favorites", {
+      const res = await fetch(`${API_ROUTE}/favorites`, {
         method: "DELETE",
         body: JSON.stringify({ id }),
         headers: {

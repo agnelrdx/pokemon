@@ -29,6 +29,8 @@ const initialState: StateProvider = {
 // eslint-disable-next-line react-refresh/only-export-components
 export const StateProviderContext = createContext<StateProvider>(initialState);
 
+const API_ROUTE = import.meta.env.VITE_SOME_KEY;
+
 export const StateProvider = ({ children }: StateProviderProps) => {
   const [pokemons, setPokemons] = useState<Pokemon[]>([]);
   const [favorites, setFavorites] = useState<Pokemon[]>([]);
@@ -45,7 +47,7 @@ export const StateProvider = ({ children }: StateProviderProps) => {
         await new Promise((resolve) => setTimeout(resolve, 1000)); // force slow loading
 
       const res = await fetch(
-        `http://localhost:4000/api/v1/pokemon?limit=150&offset=${currentOffset}`,
+        `${API_ROUTE}/pokemon?limit=150&offset=${currentOffset}`,
       );
       const data = await res.json();
 
@@ -69,7 +71,7 @@ export const StateProvider = ({ children }: StateProviderProps) => {
 
   const fetchFavorites = useCallback(async () => {
     setLoadingMore(true);
-    const res = await fetch("http://localhost:4000/api/v1/favorites");
+    const res = await fetch(`${API_ROUTE}/favorites`);
     const data = await res.json();
     setFavorites(data);
     setLoadingMore(false);

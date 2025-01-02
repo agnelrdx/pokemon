@@ -2,6 +2,8 @@ import { useState } from "react";
 
 import { Pokemon } from "@/types";
 
+const API_ROUTE = import.meta.env.VITE_SOME_KEY;
+
 export const useDialog = () => {
   const [showDialog, setShowDialog] = useState(false);
   const [pokemon, setPokemon] = useState<Pokemon | null>(null);
@@ -9,7 +11,7 @@ export const useDialog = () => {
 
   const handlePokemonDetails = async (name: string) => {
     setSelectedPokemon(name);
-    const res = await fetch(`http://localhost:4000/api/v1/pokemon/${name}`);
+    const res = await fetch(`${API_ROUTE}/pokemon/${name}`);
     const data = await res.json();
     setPokemon(data);
     setShowDialog(true);
