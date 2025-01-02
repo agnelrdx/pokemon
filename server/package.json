@@ -11,7 +11,8 @@
     "lint": "eslint --fix src test",
     "typecheck": "tsc --noEmit",
     "db:create": "sqlite3 db.sqlite3 < schema.sql",
-    "db:drop": "rm db.sqlite3"
+    "db:drop": "rm db.sqlite3",
+    "vercel-build": "echo 'vercel-build'"
   },
   "keywords": [],
   "author": "Agnel Joseph",
