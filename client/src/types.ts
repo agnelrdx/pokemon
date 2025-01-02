@@ -24,11 +24,15 @@ export type Pokemon = {
 
 export type PokemonCardProps = {
   pokemon: Pokemon;
-  detailsLoading: string | null;
+  showAddToFavorites: boolean;
+  showRemoveFromFavorites: boolean;
+  selectedPokemon: string | null;
+  onKeyChange: () => void;
   onViewDetails: (name: string) => void;
 };
 
 export type PokemonDialogProps = {
   pokemon: Pokemon | null;
+  showDialog: boolean;
   onOpenChange: (value: boolean) => void;
 };

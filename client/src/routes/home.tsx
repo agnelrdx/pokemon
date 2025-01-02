@@ -1,72 +1,57 @@
-import { useState, useEffect, useCallback, useRef } from "react";
+import {
+  useEffect,
+  useMemo,
+  useState,
+  useDeferredValue,
+  useCallback,
+} from "react";
 import { Loader2 } from "lucide-react";
 import { useIntersectionObserver } from "usehooks-ts";
 import classNames from "classnames";
 
-import { Pokemon } from "@/types";
 import { Header } from "@/components/shared/header";
 import { Navbar } from "@/components/shared/navbar";
 import { PokemonCard } from "@/components/shared/pokemon-card";
 import { PokemonDialog } from "@/components/shared/pokemon-dialog";
+import { useApiState } from "@/hooks/use-state";
+import { useDialog } from "@/hooks/use-dialog";
+import { Input } from "@/components/ui/input";
 
 const Home = () => {
-  const containerRef = useRef(null);
-  const lastScrollPos = useRef(0);
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [showDialog, setShowDialog] = useState(false);
-  const [pokemon, setPokemon] = useState<Pokemon | null>(null);
-  const [loading, setLoading] = useState<string | null>(null);
-  const [offset, setOffset] = useState(0);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [hasMore, setHasMore] = useState(true);
+  const [search, setSearch] = useState("");
+  const [key, setKey] = useState(0);
+  const deferredSearch = useDeferredValue(search);
   const { isIntersecting: inView, ref } = useIntersectionObserver({
     threshold: 0.5,
   });
+  const {
+    pokemons,
+    favorites,
+    offset,
+    hasMore,
+    loadingMore,
+    fetchPokemons,
+    fetchFavorites,
+  } = useApiState();
+  const {
+    selectedPokemon,
+    pokemon,
+    showDialog,
+    handleShowDialog,
+    handlePokemonDetails,
+  } = useDialog();
 
-  const fetchPokemons = useCallback(
-    async (currentOffset: number) => {
-      if (!hasMore) return;
-
-      setLoadingMore(true);
-      if (containerRef.current) lastScrollPos.current = window.scrollY;
-      if (currentOffset)
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // force slow loading
-
-      const res = await fetch(
-        `http://localhost:4000/api/v1/pokemon?limit=150&offset=${currentOffset}`,
-      );
-      const data = await res.json();
-
-      if (data.results.length === 0) {
-        setHasMore(false);
-        return;
-      }
-
-      setPokemons((prev) => {
-        const combined = [...prev, ...data.results];
-        const uniqueItems = Array.from(
-          new Map(combined.map((item) => [item.name, item])).values(),
-        );
-        return uniqueItems;
-      });
-      setOffset(currentOffset + 150);
-      setLoadingMore(false);
-      requestAnimationFrame(() => {
-        window.scrollTo(0, lastScrollPos.current);
-      });
-    },
-    [hasMore],
-  );
+  const filteredPokemons = useMemo(() => {
+    if (!deferredSearch) return pokemons;
+    return pokemons.filter((pokemon) =>
+      pokemon.name.toLowerCase().includes(deferredSearch.toLowerCase()),
+    );
+  }, [pokemons, deferredSearch]);
 
   useEffect(() => {
     fetchPokemons(0);
-
-    fetch("http://localhost:4000/api/v1/favorites", {
-      method: "GET",
-    })
-      .then((res) => res.json())
-      .then((data) => console.log(data));
-  }, [fetchPokemons]);
+    fetchFavorites();
+  }, [fetchPokemons, fetchFavorites, key]);
 
   useEffect(() => {
     if (inView) {
@@ -74,44 +59,51 @@ const Home = () => {
     }
   }, [inView, offset, fetchPokemons]);
 
-  const handleDetails = async (name: string) => {
-    setLoading(name);
-    const res = await fetch(`http://localhost:4000/api/v1/pokemon/${name}`);
-    const data = await res.json();
-    setPokemon(data);
-    setShowDialog(true);
-    setLoading(null);
-  };
-
-  const handleShowDialog = (value: boolean) => setShowDialog(value);
+  const handleKeyChange = useCallback(() => {
+    setKey((prev) => prev + 1);
+  }, []);
 
   return (
     <div className="container mx-auto">
       <Header />
       <Navbar />
-      <div ref={containerRef} className="grid grid-cols-3 gap-5 mb-10">
-        {pokemons.map((pokemon) => (
+      <Input
+        className="w-72 mb-5"
+        type="text"
+        placeholder="Search for pokemon"
+        onChange={(e) => setSearch(e.target.value)}
+      />
+      <div className="grid grid-cols-3 gap-5 mb-10">
+        {filteredPokemons.map((pokemon) => (
           <PokemonCard
             key={pokemon.name}
             pokemon={pokemon}
-            onViewDetails={handleDetails}
-            detailsLoading={loading}
+            selectedPokemon={selectedPokemon}
+            showAddToFavorites={
+              !favorites.some((fav) => fav.name === pokemon.name)
+            }
+            showRemoveFromFavorites={false}
+            onKeyChange={handleKeyChange}
+            onViewDetails={handlePokemonDetails}
           />
         ))}
       </div>
-      {showDialog && (
-        <PokemonDialog pokemon={pokemon} onOpenChange={handleShowDialog} />
-      )}
+      <PokemonDialog
+        key={pokemon?.name}
+        showDialog={showDialog}
+        pokemon={pokemon}
+        onOpenChange={handleShowDialog}
+      />
       <Loader2
         className={classNames(
           "animate-spin size-10 block mx-auto mb-10 opacity-0",
           {
             "opacity-100": loadingMore && hasMore,
-            "mb-0": !hasMore,
+            "mb-0": !hasMore && !loadingMore,
           },
         )}
       />
-      {offset && hasMore && !loadingMore ? <div ref={ref} /> : null}
+      {offset && hasMore && !loadingMore && !search ? <div ref={ref} /> : null}
     </div>
   );
 };

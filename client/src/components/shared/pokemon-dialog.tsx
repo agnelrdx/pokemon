@@ -14,12 +14,13 @@ import { PokemonDialogProps } from "@/types";
 
 export const PokemonDialog = ({
   pokemon,
+  showDialog,
   onOpenChange,
 }: PokemonDialogProps) => {
   const [imageLoading, setImageLoading] = useState(true);
 
   return (
-    <Dialog open={true} onOpenChange={onOpenChange}>
+    <Dialog open={showDialog} onOpenChange={onOpenChange}>
       <DialogContent className="sm:max-w-md">
         <DialogHeader>
           <DialogTitle className="capitalize">{pokemon?.name}</DialogTitle>

@@ -9,7 +9,6 @@
     "build": "tsc",
     "start:dist": "node dist/src/index.js",
     "lint": "eslint --fix src test",
-    "test": "jest",
     "typecheck": "tsc --noEmit",
     "db:create": "sqlite3 db.sqlite3 < schema.sql",
     "db:drop": "rm db.sqlite3"
