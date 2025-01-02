@@ -8,8 +8,10 @@ import { init } from "../src/app";
 
 const filename = path.resolve(__dirname, "../db.sqlite3");
 
-open({ filename, driver: sqlite3.Database }).then((db) => {
-  const app = init(db);
+let app;
 
-  return app;
+open({ filename, driver: sqlite3.Database }).then((db) => {
+  app = init(db);
 });
+
+export default app;
