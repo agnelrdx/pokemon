@@ -12,7 +12,7 @@
     "typecheck": "tsc --noEmit",
     "db:create": "sqlite3 db.sqlite3 < schema.sql",
     "db:drop": "rm db.sqlite3",
-    "vercel-build": "echo 'vercel-build'"
+    "vercel-build": "echo ***"
   },
   "keywords": [],
   "author": "Agnel Joseph",
