@@ -43,9 +43,6 @@ export const StateProvider = ({ children }: StateProviderProps) => {
       if (!hasMore) return;
 
       setLoadingMore(true);
-      if (currentOffset)
-        await new Promise((resolve) => setTimeout(resolve, 1000)); // force slow loading
-
       const res = await fetch(
         `${API_ROUTE}/pokemon?limit=150&offset=${currentOffset}`,
       );
@@ -73,8 +70,8 @@ export const StateProvider = ({ children }: StateProviderProps) => {
     setLoadingMore(true);
     const res = await fetch(`${API_ROUTE}/favorites`);
     const data = await res.json();
-    setFavorites(data);
     setLoadingMore(false);
+    setFavorites(data);
   }, []);
 
   return (
