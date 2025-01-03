@@ -31,7 +31,11 @@ export const attachDb = async (
   res: Response,
   next: NextFunction,
 ) => {
-  const filename = path.resolve(__dirname, "../db.sqlite3");
+  const dbPath =
+    process.env.NODE_ENV === "production"
+      ? "../../db.sqlite3"
+      : "../db.sqlite3";
+  const filename = path.resolve(__dirname, dbPath);
 
   let db = req.db;
   if (!db) {
