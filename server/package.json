@@ -7,7 +7,7 @@
     "start": "ts-node src/index.ts",
     "dev": "nodemon src/index.ts",
     "build": "tsc",
-    "start:dist": "tsc && node dist/src/index.js",
+    "start:dist": "node dist/src/index.js",
     "lint": "eslint --fix src test",
     "typecheck": "tsc --noEmit",
     "db:create": "sqlite3 db.sqlite3 < schema.sql",
