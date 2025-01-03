@@ -24,5 +24,5 @@ yarn db:create
 yarn db:drop
 ```
 
-App Link: https://pokemon-client-snowy.vercel.app/
+App Link: https://pokemon-client-0c4z.onrender.com
 Note: The BE is running on Render (free tier). The instance will spin down with inactivity, which can delay requests by a minute or more.
